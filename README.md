@@ -9,7 +9,10 @@ Example:
 
 1. Create an interactive Video with the name "My interactive Video"
 2. (optional) Set the visibility to "available but not shown on course page"
-3. Enter in any textfield the following pattern {h5p:My interactive Video}
+3. Enter in any textfield the following pattern **{h5p: My interactive Video }**
 4. It will be embedded automatically and the results will be graded in your course.
 
 Please note, that the activity name is case sensitive!
+
+# Update
+Please note that for compatibility with the plugin iedib_snippets, the pattern of the filter includes a space after : and before the }.
