@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$string['filtername'] = 'H5P Filter for IEDIB';
-$string['pluginname'] = 'H5P Filter IEDIB';
+$string['filtername'] = 'Filtro H5P para IEDIB';
+$string['pluginname'] = 'Filtro H5P IEDIB';
 
-$string['privacy:metadata'] = 'This plugin does not store any data at all.';
+$string['privacy:metadata'] = 'Este plugin no guarda ningún tipo de información.';
