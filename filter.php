@@ -34,17 +34,43 @@ class filter_h5p extends moodle_text_filter {
         if (empty($COURSE->id) || $COURSE->id == 0) {
             return $text;
         }
-        if (strpos($text, '{h5p: ') === false) {
+        if (strpos($text, '{h5p:') === false) {
             return $text;
         }
-
+        
+        //Josep: captura totes les instàncies que s'han d'inserir
+        $re = '/\{h5p:\s*(.*)\}/m';
+        preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0); 
+        //Josep: Fix &nbsp; problem in name!!!
+        foreach($matches as &$ma) {
+            $ma[1] = trim(str_replace('&nbsp;', '', $ma[1]));
+        }
+         
+  
         $modinfo = get_fast_modinfo($COURSE);
         $cms = $modinfo->get_cms();
-
+ 
         foreach ($cms as $cm) {
+            // Si no és una activitat h5p l'obviam
             if ($cm->modname != 'hvp' && $cm->modname != 'h5pactivity') {
                 continue;
             }
+            //Josep: Optimització, si l'activitat h5p no està enllaçada en pàgina també l'obviam
+            //no cal generar el template si tanmateix no hi és
+            
+            $foundcase = null;
+            $nametrim = trim($cm->name);
+          
+            foreach ($matches as $ma) { 
+                if(strcmp($ma[1], $nametrim) == 0) {
+                    $foundcase = $ma[0];
+                    break;
+                }
+            }
+            if($foundcase == null) { 
+                continue;
+            }  
+            
             $params = (object) array(
                 'id' => $cm->id,
                 'name' => $cm->modname,
@@ -98,7 +124,7 @@ class filter_h5p extends moodle_text_filter {
             //$link = $OUTPUT->render_from_template('filter_h5p/link', $params);
 
 
-            $text = str_replace('{h5p: ' . $cm->name . ' }', $embed, $text);
+            $text = str_replace($foundcase, $embed, $text);
         }
 
         return $text;
