@@ -28,6 +28,13 @@ class filter_h5p extends moodle_text_filter {
     /**
      * Function filter replaces any h5p-sources.
      */
+    private function removeHtmlEntities($txt) {
+        $txt = str_replace('&nbsp;', " ", $txt);
+        $txt = str_replace('&apos;', "'", $txt);
+        $txt = str_replace('&quot;', '"', $txt);
+        $txt = str_replace('&amp;', "&", $txt);
+        return $txt;
+    }
     public function filter($text, array $options = array()) {
         global $CFG, $DB, $COURSE, $OUTPUT;
 
@@ -41,12 +48,11 @@ class filter_h5p extends moodle_text_filter {
         //Josep: captura totes les instàncies que s'han d'inserir
         $re = '/\{h5p:\s*(.*)\}/m';
         preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0); 
-        //Josep: Fix &nbsp; problem in name!!!
+        //Josep: Fix HTML entities in name
         foreach($matches as &$ma) {
-            $ma[1] = trim(str_replace('&nbsp;', '', $ma[1]));
+            $ma[1] = trim($this->removeHtmlEntities($ma[1]));
         }
-         
-  
+           
         $modinfo = get_fast_modinfo($COURSE);
         $cms = $modinfo->get_cms();
  
