@@ -43,6 +43,7 @@ class filter_h5p extends moodle_text_filter {
         }
 
         //Arregla problemes de id's numèriques
+        /*
         $patrones = array();
         $patrones[0] = '/\sid="([0-9].*?)"/mi';
         $patrones[1] = '/\sdata-parent="#([0-9].*?)"/mi';
@@ -53,6 +54,7 @@ class filter_h5p extends moodle_text_filter {
         $sustituciones[0] = ' href="#w$1"';
         //Must replace captured fields with w...
         $text = preg_replace($patrones, $sustituciones, $text);
+        */
 
         if (strpos($text, '{h5p:') === false) {
             return $text;
